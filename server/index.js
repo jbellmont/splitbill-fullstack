@@ -106,8 +106,8 @@ app.post('/friends/add', (req, res) => {
 });
 
 // READ - Get friends
-app.get('/friends/all', (req, res) => {
-  const sql = 'SELECT * FROM friends';
+app.get('/friends/get/:id', (req, res) => {
+  const sql = `SELECT f.friend_id, f.friend_name, a.activity_id, a.activity_name, a.settled_status FROM friends as f INNER JOIN activities as a ON f.activity_id = a.activity_id WHERE a.activity_id = ${req.params.id}`;
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
