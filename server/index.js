@@ -59,6 +59,16 @@ app.get('/activities/all', (req, res) => {
   });
 });
 
+// READ - Get specific activity
+app.get('/activities/get/:id', (req, res) => {
+  const sql = `SELECT * FROM activities WHERE activity_id = ${req.params.id}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
 // UPDATE - Put activity
 app.put('/activities/update/:id', (req, res) => {
   const updatedActivity = {

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import CreateForm from './CreateForm';
 import ActivityList from './ActivityList';
+import '../css/Global.css';
 
 const Home = () => {
 
@@ -9,7 +11,6 @@ const Home = () => {
   const onCreateActivitySubmit = (e) => {
     // Creates a new Activity in the MySQL data
     e.preventDefault();
-    console.log(newActivityInput);
     // Request body
     const options = {
       method: 'POST',
@@ -58,18 +59,31 @@ const Home = () => {
       .catch(error => console.log(error));
   };
 
+  // Input on change logic
+  const onCreateActivityFormChange = (e) => {
+    setNewActivityInput(e.target.value);
+  };
+
 
   return (
     <div>
-      <form className="create-activity-form" onSubmit={onCreateActivitySubmit} >
-        <input type="text" placeholder="activity name" value={newActivityInput} onChange={(e) => setNewActivityInput(e.target.value)}/>
-        <button>Create activity</button>
-        <p>Activities are things like a group holiday, a restaurant bill or stag do</p>
-      </form>
-      <ActivityList 
-        activities={activities}
-        onDeleteActivityClick={onDeleteActivityClick}
+      <CreateForm 
+        onCreateSubmit={onCreateActivitySubmit}
+        inputValue={newActivityInput}
+        onChange={onCreateActivityFormChange}
+        buttonText="Create activity"
+        description="Activities are things like a group holiday, a restaurant bill or stag do"
+        placeholderText="activity name"
       />
+
+      {activities.length === 0 ?
+        <div><i className="fas fa-spinner spinner"></i> Loading</div> :
+        <ActivityList 
+          activitiesData={activities}
+          onDeleteActivityClick={onDeleteActivityClick}
+        />
+      }
+
     </div>
   );
 };

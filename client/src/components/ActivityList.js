@@ -5,7 +5,7 @@ import '../css/ActivityList.css';
 
 const ActivityList = (props) => {
 
-  const renderedList = props.activities.map(data => {
+  const renderedList = props.activitiesData.map(data => {
     return (
       <div 
         className="activity-button" 
