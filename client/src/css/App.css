@@ -7,10 +7,6 @@ body {
   box-sizing: border-box;
 }
 
-h2 {
-  font-size: 1.2rem;
-}
-
 .container {
   margin: 100px;
 }

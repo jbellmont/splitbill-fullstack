@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import CreateForm from './CreateForm';
 import FriendList from './FriendsList';
+import WhoOwesWho from './WhoOwesWho';
 import '../css/Global.css';
 
 const Activity = () => {
 
   // state & setup
-  const [loading, setLoading] = useState(true);
-  const [friends, setFriends] = useState([]);
-  const [buttonClicked, setButtonClicked] = useState(true);
+  const [friendsLoading, setFriendsLoading] = useState(true);
+  const [friendsData, setFriendsData] = useState([{activity_name: 'Default'}]);
+  const [activityButtonClicked, setActivityButtonClicked] = useState(true);
   const currentActivityID = window.location.pathname.split('/')[2]; 
+  const [friendTotalAmount, setFriendTotalAmount] = useState([]);
 
-  // Get Activity name
-  const [activityName, setActivityName] = useState('');
-  useEffect(() => {
-    fetch(`http://localhost:5000/activities/get/${currentActivityID}`)
-    .then(response => response.json())
-    .then(response => setActivityName(response.activity_name))
-    .catch(error => console.log(error))
-  }, []);
-
-
-  // Get the friends data related to the current Activity ID
+  // Get the Friends data related to the current Activity ID
   useEffect(() => {
     fetch(`http://localhost:5000/friends/get/${currentActivityID}`)
     .then(response => response.json())
     .then(response => {
-      setFriends(response);
-      setLoading(false);
+      console.log('Response:', response);
+      setFriendsData(response);
+      console.log('Friends data: ', friendsData)
+      setFriendsLoading(false);
     })
-    .catch(error => console.log(error))
-  }, [buttonClicked]);
+    .catch(error => console.log(error));
+
+  }, [activityButtonClicked, currentActivityID]);
+
+
+  // Set activity name
+  const [activityName, setActivityName] = useState('XXXX');
+  useEffect(() => setActivityName(friendsData[0].activity_name), [friendsData]);
 
 
   // Create new friend
@@ -47,7 +47,7 @@ const Activity = () => {
       },
       body: JSON.stringify({
         friendName: newFriendInput,
-        activityID: window.location.pathname.split('/')[2]
+        activityID: currentActivityID
       })
     };
 
@@ -55,7 +55,7 @@ const Activity = () => {
     fetch('http://localhost:5000/friends/add', options)
       .then(response => {
         console.log('Creating friend response status: ', response.status);
-        setButtonClicked(!buttonClicked);
+        setActivityButtonClicked(!activityButtonClicked);
       })
       .catch(err => console.log(err));
   };
@@ -68,36 +68,44 @@ const Activity = () => {
       .then(response => {
         console.log(response.status);
         console.log(`ID ${currentFriendID} successfully deleted`);
-        setButtonClicked(!buttonClicked);
+        setActivityButtonClicked(!activityButtonClicked);
       })
       .catch(error => console.log(error));
   };
 
-  // Input on change logic
-  const onCreateFriendFormChange = (e) => {
-    setNewFriendInput(e.target.value);
-  };
+  // Add receipt
+  const onAddReceiptClick = () => '';
+
+  // On change logic for the create new Friend input form
+  const onCreateFriendFormChange = (e) => setNewFriendInput(e.target.value);
+
 
   return (
     <div>
 
-      {loading ?
+      {friendsLoading ?
         <div><i className="fas fa-spinner spinner"></i> Loading</div> :
         <div>
-          <h1>{activityName ? activityName : null}</h1>
+          <h1>{activityName}</h1>
 
           <CreateForm 
             onCreateSubmit={onCreateFriendSubmit}
             inputValue={newFriendInput}
             onChange={onCreateFriendFormChange}
             buttonText={`Add friend`}
-            description={`Add all friends who were part of the ${activityName ? activityName : null}`}
+            description={`Add all friends who were part of the ${activityName}`}
             placeholderText="friend name"
           />
 
           <FriendList 
-            friendsData={friends}
+            friendsData={friendsData}
+            friendTotalAmount={friendTotalAmount}
+            onAddReceiptClick={onAddReceiptClick}
             onDeleteFriendClick={onDeleteFriendClick}
+          />
+
+          <WhoOwesWho 
+            friendsData={friendsData}
           />
 
         </div>

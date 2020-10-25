@@ -5,12 +5,29 @@ import '../css/Global.css';
 
 const Home = () => {
 
-  // Create new activity
-  const [newActivityInput, setNewActivityInput] = useState('');
+  const [activitiesLoading, setActivitiesLoading] = useState(true);
   const [buttonClicked, setButtonClicked] = useState(true);
+
+  // Get all Activity data
+  const [activityData, setActivityData] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:5000/activities/all')
+      .then(response => response.json())
+      .then(response => {
+        setActivityData(response);
+        setActivitiesLoading(false)
+      })
+
+      .catch(error => console.log(error));
+  }, [buttonClicked]);
+
+
+  // Create new Activity
+  const [newActivityInput, setNewActivityInput] = useState('');
   const onCreateActivitySubmit = (e) => {
     // Creates a new Activity in the MySQL data
     e.preventDefault();
+
     // Request body
     const options = {
       method: 'POST',
@@ -33,21 +50,7 @@ const Home = () => {
   };
 
 
-  // Activity list logic
-  const [activities, setActivities] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:5000/activities/all')
-      .then(response => response.json())
-      .then(response => {
-        setActivities(response.map(activity => activity));
-        console.log(response);
-      })
-      .catch(error => console.log(error));
-  }, [buttonClicked]);
-
-
-  // Delete activity logic
+  // Delete specific Activity
   const onDeleteActivityClick = (e) => {
     const currentActivityButtonID = e.target.parentNode.dataset.id;
     fetch(`http://localhost:5000/activities/delete/${currentActivityButtonID}`, { method: "DELETE" })
@@ -59,10 +62,8 @@ const Home = () => {
       .catch(error => console.log(error));
   };
 
-  // Input on change logic
-  const onCreateActivityFormChange = (e) => {
-    setNewActivityInput(e.target.value);
-  };
+  // On change logic for the create new Activity input form
+  const onCreateActivityFormChange = (e) => setNewActivityInput(e.target.value);
 
 
   return (
@@ -76,10 +77,10 @@ const Home = () => {
         placeholderText="activity name"
       />
 
-      {activities.length === 0 ?
+      {activitiesLoading ?
         <div><i className="fas fa-spinner spinner"></i> Loading</div> :
         <ActivityList 
-          activitiesData={activities}
+          activityData={activityData}
           onDeleteActivityClick={onDeleteActivityClick}
         />
       }

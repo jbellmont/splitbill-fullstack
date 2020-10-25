@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/ActivityList.css';
 
 
 const ActivityList = (props) => {
 
-  const renderedList = props.activitiesData.map(data => {
+  const renderedList = props.activityData.map(activity => {
     return (
       <div 
         className="activity-button" 
-        key={data.activity_id}
-        data-id={data.activity_id}
+        key={activity.activity_id}
+        data-id={activity.activity_id}
       >
-        <Link to={`/activity/${data.activity_id}`}>
-        {data.activity_name}</Link> <br />
-        {data.time_created} <br />
+        <Link to={`/activity/${activity.activity_id}`}>
+        {activity.activity_name}</Link> <br />
+        {activity.time_created} <br />
         <button onClick={props.onDeleteActivityClick}>Delete activity</button>
       </div>
     );

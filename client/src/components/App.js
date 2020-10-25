@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './Header';
 import Home from './Home';
 import Activity from './Activity';
 import Receipts from './Receipts';
-import ActivityList from './ActivityList';
 import '../css/App.css';
 
 const App = () => {

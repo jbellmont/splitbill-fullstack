@@ -117,13 +117,40 @@ app.post('/friends/add', (req, res) => {
 
 // READ - Get friends
 app.get('/friends/get/:id', (req, res) => {
-  const sql = `SELECT f.friend_id, f.friend_name, a.activity_id, a.activity_name, a.settled_status FROM friends as f INNER JOIN activities as a ON f.activity_id = a.activity_id WHERE a.activity_id = ${req.params.id}`;
+  const sql = `
+  SELECT r.friend_id, f.friend_name, r.activity_id, a.activity_name, f.settled_status, SUM(receipt_amount) as total_paid
+  FROM receipts as r
+  INNER JOIN friends as f ON r.friend_id = f.friend_id
+  INNER JOIN activities as a ON r.activity_id = a.activity_id
+  WHERE r.activity_id = ${req.params.id}
+  GROUP BY friend_id;
+  `;
+    db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// READ - the ActivityID + Friend Name of the active Friend
+app.get('/friends/get/act/:id', (req, res) => {
+  const sql = `SELECT friends.activity_id, friends.friend_name FROM friends INNER JOIN activities ON friends.activity_id = activities.activity_id WHERE friends.friend_id = ${req.params.id};`
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
   });
 });
+
+// READ - get the total amount spent for all Friends
+app.get('/friends/get/spend/all', (req, res) => {
+  const sql = `SELECT friend_id, SUM(receipt_amount) as total_paid FROM receipts GROUP BY friend_id`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  })
+})
 
 // UPDATE - Put friend
 app.put('/friends/update/:id', (req, res) => {
@@ -174,6 +201,16 @@ app.post('/receipts/add', (req, res) => {
 // READ - Get receipts
 app.get('/receipts/all', (req, res) => {
   const sql = 'SELECT * FROM receipts';
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// READ - Get specific receipts based on friend
+app.get('/receipts/get/:id', (req, res) => {
+  const sql = `SELECT * FROM receipts WHERE friend_id = ${req.params.id}`;
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
