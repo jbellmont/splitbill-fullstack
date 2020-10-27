@@ -7,12 +7,14 @@ const WhoOwesWho = ({ friendsData }) => {
     setDropdownValue(Number(e.target.value));
   };
   
-  const [activeFriendName, setActiveFriendName] = useState('');
+  const [activeFriendData, setActiveFriendData] = useState('');
   useEffect(() => {
     const filteredFriendData = [...friendsData].filter(friend => friend.friend_id === dropdownValue);
-    setActiveFriendName(filteredFriendData[0].friend_name);
+    setActiveFriendData(filteredFriendData[0]);
     
-  }, [dropdownValue])
+  }, [dropdownValue]);
+
+  // (currentFriendSpend/friendsData.length) - (friendYouOwe/friendsData.length)
 
   return (
     <div>
@@ -27,9 +29,9 @@ const WhoOwesWho = ({ friendsData }) => {
         {friendsData.map(friend => <option value={friend.friend_id}>{friend.friend_name}</option>)}
       </select>
 
-      <h3>{activeFriendName} owes...</h3>
+      <h3>{activeFriendData.friend_name} owes...</h3>
 
-      {friendsData.map(friend => friend.friend_id !== dropdownValue ? <div>{friend.friend_name}: £</div> : null)}
+      {friendsData.map(friend => friend.friend_id !== dropdownValue ? <div>{friend.friend_name}: £{(friend.total_paid / friendsData.length) - (activeFriendData.total_paid / friendsData.length)}</div> : null)}
     </div>
   );
 };

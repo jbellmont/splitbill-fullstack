@@ -1,4 +1,5 @@
 import React from 'react';
+import EditFormOverlay from './EditFormOverlay';
 import { Link } from 'react-router-dom';
 import '../css/ActivityList.css';
 
@@ -15,6 +16,7 @@ const FriendsList = (props) => {
             <th>Friend name</th>
             <th>Total paid</th>
             <th>Receipts</th>
+            <th>Edit</th>
             <th>Delete</th>
           </tr>
         </thead>
@@ -22,9 +24,9 @@ const FriendsList = (props) => {
           {props.friendsData.map((friend, index) => {
             return (
               <tr key={friend.friend_id} data-id={friend.friend_id}>
-                <td>{index}</td>
+                <td>{index + 1}</td>
                 <td>{friend.friend_name}</td>
-                <td>£00.00</td>
+                <td>{friend.total_paid}</td>
                 <td>
                   <Link to={`/receipts/${friend.friend_id}`}>
                     <button onClick={props.onAddReceiptClick}>Amend receipts</button>
@@ -33,12 +35,14 @@ const FriendsList = (props) => {
                 <td data-id={friend.friend_id}>
                   <button onClick={props.onDeleteFriendClick}>Delete friend</button>
                 </td>
+                <td>
+                  <button onClick={props.openCloseOverlay}>Edit friend name</button>
+                </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-
     </div>
   );
 };

@@ -118,12 +118,12 @@ app.post('/friends/add', (req, res) => {
 // READ - Get friends
 app.get('/friends/get/:id', (req, res) => {
   const sql = `
-  SELECT r.friend_id, f.friend_name, r.activity_id, a.activity_name, f.settled_status, SUM(receipt_amount) as total_paid
+  SELECT f.friend_id, f.friend_name, f.activity_id, a.activity_name, f.settled_status, SUM(r.receipt_amount) as total_paid
   FROM receipts as r
-  INNER JOIN friends as f ON r.friend_id = f.friend_id
-  INNER JOIN activities as a ON r.activity_id = a.activity_id
-  WHERE r.activity_id = ${req.params.id}
-  GROUP BY friend_id;
+  RIGHT JOIN friends as f ON r.friend_id = f.friend_id
+  INNER JOIN activities as a ON f.activity_id = a.activity_id
+  WHERE f.activity_id = ${req.params.id}
+  GROUP BY f.friend_id;
   `;
     db.query(sql, (err, result) => {
     if (err) throw err;
@@ -237,7 +237,7 @@ app.put('/receipts/update/:id', (req, res) => {
 
 // DELETE - Delete receipt
 app.delete('/receipts/delete/:id', (req, res) => {
-  const sql = `DELETE FROM receipts WHERE receipt_id = ${req.params.id}`;
+  const sql = `DELETE FROM receipts WHERE friend_id = ${req.params.id}`;
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(sql);

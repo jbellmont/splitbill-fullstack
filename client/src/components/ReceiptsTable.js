@@ -20,7 +20,7 @@ const ReceiptsTable = (props) => {
           {props.receiptsData.map((receipt, index) => {
             return (
               <tr>
-                <td>{index}</td>
+                <td>{index + 1}</td>
                 <td>{receipt.receipt_name}</td>
                 <td>{receipt.receipt_category}</td>
                 <td>{receipt.receipt_amount}</td>
