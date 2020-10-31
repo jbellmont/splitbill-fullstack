@@ -1,7 +1,56 @@
+.activity-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .activity-button {
-  background-color: #F0C987;
+  display: flex;
+  align-items: center;
+  background-color: #FFF;
+  border-radius: 5px;
+  border: 2px solid var(--shadow-grey);
+  box-shadow: var(--drop-shadow);
   color: #3C153B;
-  width: 200px;
-  margin: 50px;
-  padding: 10px;
+  margin-top: var(--mobile-margin);
+  padding: 20px;
+  transition: box-shadow var(--hover-speed);
+}
+
+.activity-button:hover {
+  box-shadow: var(--shadow-grey) 0px 0px 10px;
+}
+
+.activity-button .left-side {
+  flex-grow: 4;
+}
+
+.activity-button .left-side h3, a{
+  color: var(--text-colour);
+  margin: 0;
+}
+
+.activity-button .right-side {
+  flex-grow: 1;
+}
+
+.activity-button .right-side button {
+  border: 0;
+  background-color: #FFF;
+  font-size: 1.25rem;
+  color: var(--shadow-grey);
+  transition: color var(--hover-speed);
+  margin-left: 20px;
+}
+
+.activity-button .right-side button:hover {
+  color: var(--text-colour);
+}
+
+@media (min-width: 768px) {
+  .activity-button {
+    margin-right: var(--mobile-margin);
+    min-width: 100px;
+    max-width: 200px;
+  }
 }

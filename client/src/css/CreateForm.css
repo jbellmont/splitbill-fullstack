@@ -1,0 +1,38 @@
+@import "./Global.css";
+
+.create-form input {
+  height: 50px;
+  font-family: var(--main-font);
+  font-size: 1.5rem;
+  border: 2px solid var(--shadow-grey);
+  border-radius: 5px;
+  width: 100%;
+  margin: 20px 0px;
+}
+
+.create-form button {
+  font-family: var(--main-font);
+  font-size: 1rem;
+  font-weight: 700;
+  border: 0;
+  height: 50px;
+  background-color: var(--pink-colour);
+  border-radius: 20px;
+  box-shadow: var(--drop-shadow);
+  width: 150px;
+  transition: background-color var(--hover-speed);
+}
+
+.create-form button:hover {
+  background-color: #FFC2D5;
+}
+
+.create-form p {
+  text-align: left;
+}
+
+@media (min-width: 768px) { /* Tablet */
+  .create-form input {
+    width: 50%;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './Header';
 import Home from './Home';
@@ -7,17 +7,23 @@ import Receipts from './Receipts';
 import '../css/App.css';
 
 const App = () => {
+
   return (
-    <div className="container">
+    <div>
       <Router>
         <header>
-          <h1>splitbill</h1>
-          <h2>simplifies the process of working out who owes what after a group trip or meal</h2>
           <Header />
+          <div className="header-title">
+            <h1>splitbill</h1>
+            <h2>Bill-splitting made easy</h2>
+          </div>
         </header>
-        <Route path="/" exact component={Home} />
-        <Route path="/activity" component={Activity} />
-        <Route path="/receipts" component={Receipts} />
+
+        <div className="container">
+          <Route path="/" exact component={Home} />
+          <Route path="/activity" component={Activity} />
+          <Route path="/receipts" component={Receipts} />
+        </div>
       </Router>
 
     </div>

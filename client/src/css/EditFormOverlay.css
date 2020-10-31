@@ -1,4 +1,51 @@
-.overlay-container {
-  background-color: aqua;
+.overlay {
+  background-color: rgba(0, 0, 0, 0.39);
   position: fixed;
+  height: 100%;
+  top:0;
+  left:0;
+  width: 100%;
+}
+
+.overlay .overlay-container {
+  background-color: #FFF;
+  border: 2px solid var(--shadow-grey);
+  padding: 10px;
+  width: 90vw;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.overlay .overlay-container input {
+  height: 50px;
+  font-family: var(--main-font);
+  font-size: 1.5rem;
+  border: 2px solid var(--shadow-grey);
+  border-radius: 5px;
+  width: 250px;
+  margin-bottom: 25px;
+}
+
+.overlay .overlay-container input:focus {
+  outline: none;
+}
+
+.overlay .overlay-container button {
+  font-family: var(--main-font);
+  font-size: 1rem;
+  font-weight: 700;
+  border: 0;
+  height: 50px;
+  background-color: var(--pink-colour);
+  border-radius: 20px;
+  box-shadow: var(--drop-shadow);
+  width: 100px;
+  transition: background-color var(--hover-speed);
+  margin-right: 10px;
+}
+
+.overlay .overlay-container button:hover {
+  background-color: #FFC2D5;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AddReceiptForm from './AddReceiptForm';
 import ReceiptsTable from './ReceiptsTable';
+import EditFormOverlay from './EditFormOverlay';
 import '../css/Global.css';
 
 const Receipts = () => {
@@ -71,7 +72,7 @@ const Receipts = () => {
 
   // Delete specific Receipt
   const onDeleteReceiptClick = (e) => {
-    const currentReceiptID = e.target.parentNode.dataset.id;
+    const currentReceiptID = e.target.parentNode.parentNode.dataset.id;
     console.log(currentReceiptID);
     fetch(`http://localhost:5000/receipts/delete/${currentReceiptID}`, { method: "DELETE" })
       .then(response => {
@@ -81,6 +82,56 @@ const Receipts = () => {
       })
       .catch(error => console.log(error));
   };
+
+
+  // Show/hide edit Receipt overlay
+  const [showEditReceiptsOverlay, setShowEditReceiptsOverlay] = useState(false);
+  const [activeReceiptID, setActiveReceiptID] = useState(0);
+  const onEditReceiptOverlayClick = (e) => { // Toggles the overlay visibility
+    setShowEditReceiptsOverlay(!showEditReceiptsOverlay);
+    const currentReceiptID = Number(e.target.parentNode.parentNode.dataset.id);
+    setActiveReceiptID(currentReceiptID);
+  };
+
+  // Edit receipt overlay form input values
+  const [editReceiptNameInputValue, setEditReceiptNameInputValue] = useState('');
+  const onEditReceiptNameInputValueChange = (e) => setEditReceiptNameInputValue(e.target.value);
+  const [editReceiptAmountInputValue, setEditReceiptAmountInputValue] = useState(0);
+  const onEditReceiptAmountInputValueChange = (e) => setEditReceiptAmountInputValue(e.target.value);
+  const [editReceiptCategoryInputValue, setEditReceiptCategoryInputValue] = useState('Alcohol');
+  const onEditReceiptCategoryInputValueChange = (e) => setEditReceiptCategoryInputValue(e.target.value);
+
+  const onEditReceiptSubmitForm = (e) => {
+    e.preventDefault();
+    // Request body
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      body: JSON.stringify({
+        receiptAmount: editReceiptAmountInputValue,
+        receiptName: editReceiptNameInputValue,
+        receiptCategory: editReceiptCategoryInputValue,
+        friendID: currentFriendID,
+        activityID: currentActivityID,
+      })
+    };
+
+    fetch(`http://localhost:5000/receipts/update/${activeReceiptID}`, options)
+      .then(response => {
+        console.log(response.status);
+        console.log('Receipt updated');
+        setReceiptsButtonClicked(!receiptsButtonClicked);
+      })
+      .catch(error => console.log(error));
+    
+      // closes the Edit Receipt overlay
+      setShowEditReceiptsOverlay(!showEditReceiptsOverlay);
+  };
+
+
 
 
 
@@ -100,10 +151,26 @@ const Receipts = () => {
             setInputReceiptCategory={setInputReceiptCategory}
             onCreateReceiptSubmit={onCreateReceiptSubmit}
           />
+
           <ReceiptsTable 
             receiptsData={receiptsData}
             onDeleteReceiptClick={onDeleteReceiptClick}
+            onEditReceiptOverlayClick={onEditReceiptOverlayClick}
           />
+
+          <EditFormOverlay 
+            toEdit="receipts"
+            showOverlay={showEditReceiptsOverlay}
+            formInputOneValue={editReceiptNameInputValue}
+            onFormInputOneChange={onEditReceiptNameInputValueChange}
+            formInputTwoValue={editReceiptAmountInputValue}
+            onFormInputTwoChange={onEditReceiptAmountInputValueChange}
+            formInputThreeValue={editReceiptCategoryInputValue}
+            onFormInputThreeChange={onEditReceiptCategoryInputValueChange}
+            onFormSubmit={onEditReceiptSubmitForm}
+            closeOverlay={onEditReceiptOverlayClick}
+          />
+
         </div>
       }
     

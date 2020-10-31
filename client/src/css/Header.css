@@ -1,9 +1,16 @@
+@import "./Global.css";
+
 nav {
-  background-color: #F0C987;
-  color: #3C153B;
-  padding: 10px 0px;
+  background-color: var(--lightblue-colour);
+  padding: 10px;
+  box-shadow: var(--drop-shadow);
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 nav a {
-  color: #3C153B;
+  color: var(--text-colour);
+  text-decoration: none;
+  margin-right: 20px;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const WhoOwesWho = ({ friendsData }) => {
+const AmountOwed = ({ friendsData }) => {
   
   const [dropdownValue, setDropdownValue] = useState(friendsData[0].friend_id);
   const onDropdownChange = (e) => {
@@ -18,7 +18,7 @@ const WhoOwesWho = ({ friendsData }) => {
 
   return (
     <div>
-      <h2>Who owes who</h2>
+      <h2>Amount owed</h2>
 
       <select 
         name="friend" 
@@ -29,11 +29,31 @@ const WhoOwesWho = ({ friendsData }) => {
         {friendsData.map(friend => <option value={friend.friend_id}>{friend.friend_name}</option>)}
       </select>
 
-      <h3>{activeFriendData.friend_name} owes...</h3>
+      owes...
 
-      {friendsData.map(friend => friend.friend_id !== dropdownValue ? <div>{friend.friend_name}: £{(friend.total_paid / friendsData.length) - (activeFriendData.total_paid / friendsData.length)}</div> : null)}
-    </div>
+      <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Friend name</th>
+              <th>Amount owed</th>
+            </tr>
+          </thead>
+          <tbody>
+
+      {friendsData.map((friend, index) => friend.friend_id !== dropdownValue ?
+      <tr>
+        <td>{index + 1}</td>
+        <td>{friend.friend_name}</td>
+        <td>£ {(friend.total_paid / friendsData.length) - (activeFriendData.total_paid / friendsData.length)}</td>
+      </tr>
+        : 
+        null)}
+
+          </tbody>
+        </table>
+      </div>
   );
 };
 
-export default WhoOwesWho;
+export default AmountOwed;

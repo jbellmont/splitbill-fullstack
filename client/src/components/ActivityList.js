@@ -6,22 +6,29 @@ import '../css/ActivityList.css';
 const ActivityList = (props) => {
 
   const renderedList = props.activityData.map(activity => {
+    const dateCreated = new Date(activity.time_created);
     return (
       <div 
         className="activity-button" 
         key={activity.activity_id}
         data-id={activity.activity_id}
       >
-        <Link to={`/activity/${activity.activity_id}`}>
-        {activity.activity_name}</Link> <br />
-        {activity.time_created} <br />
-        <button onClick={props.onDeleteActivityClick}>Delete activity</button>
+        <div className="left-side">
+          <Link to={`/activity/${activity.activity_id}`}>
+          <h3>{activity.activity_name}</h3></Link> <br />
+          Created: {dateCreated.getDate()}/{dateCreated.getMonth()}/{dateCreated.getFullYear()}
+        </div>
+
+        <div className="right-side">
+          <button onClick={props.onDeleteActivityClick}><i className="fas fa-trash-alt"></i></button>
+        </div>
+
       </div>
     );
   });
 
   return (
-    <div>
+    <div className="activity-button-container">
       {renderedList}
     </div>
   );

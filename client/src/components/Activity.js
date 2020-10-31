@@ -2,17 +2,27 @@ import React, { useState, useEffect } from 'react';
 import CreateForm from './CreateForm';
 import EditFormOverlay from './EditFormOverlay';
 import FriendsTable from './FriendsTable';
-import WhoOwesWho from './WhoOwesWho';
+import AmountOwed from './AmountOwed';
 import '../css/Global.css';
+import '../css/Activity.css';
 
 const Activity = () => {
 
   // state & setup
   const [friendsLoading, setFriendsLoading] = useState(true);
-  const [friendsData, setFriendsData] = useState([{activity_name: 'Default'}]);
+  const [friendsData, setFriendsData] = useState([{activity_name: 'Trip'}]);
   const [activityButtonClicked, setActivityButtonClicked] = useState(true);
   const currentActivityID = window.location.pathname.split('/')[2]; 
   const [friendTotalAmount, setFriendTotalAmount] = useState([]);
+
+  // Get the current Activity Name
+  const [currentActivityName, setCurrentActivityName] = useState('Trip');
+  useEffect(() => {
+    fetch(`http://localhost:5000/activities/get/${currentActivityID}`)
+    .then(response => response.json())
+    .then(response => setCurrentActivityName(response[0].activity_name))
+    .catch(error => console.log(error));
+  }, []);
 
   // Get the Friends data related to the current Activity ID
   useEffect(() => {
@@ -20,6 +30,10 @@ const Activity = () => {
     .then(response => response.json())
     .then(response => {
       console.log('Response:', response);
+      if (response.length === 0) {
+        setFriendsLoading(false);
+        return;
+      }
       setFriendsData(response);
       console.log('Friends data: ', friendsData)
       setFriendsLoading(false);
@@ -30,7 +44,7 @@ const Activity = () => {
 
 
   // Set activity name
-  const [activityName, setActivityName] = useState('XXXX');
+  const [activityName, setActivityName] = useState('Default');
   useEffect(() => setActivityName(friendsData[0].activity_name), [friendsData]);
 
   
@@ -64,7 +78,7 @@ const Activity = () => {
 
   // Delete friend logic
   const onDeleteFriendClick = (e) => {
-    const currentFriendID = e.target.parentNode.dataset.id;
+    const currentFriendID = e.currentTarget.parentNode.dataset.id;
     fetch(`http://localhost:5000/friends/delete/${currentFriendID}`, { method: "DELETE" })
       .then(response => {
         console.log(response.status);
@@ -88,8 +102,8 @@ const Activity = () => {
   const onCreateFriendFormChange = (e) => setNewFriendInput(e.target.value);
 
   // Show/hide Edit Activity overlay
-  const [showEditActivityNameOverlay, setShowEditActivityNameOverlay] = useState(false);
-  const onToggleEditActivityNameOverlayClick = () => setShowEditActivityNameOverlay(!showEditActivityNameOverlay);
+  const [showEditActivityOverlay, setShowEditActivityOverlay] = useState(false);
+  const onEditActivityOverlayClick = () => setShowEditActivityOverlay(!showEditActivityOverlay);
 
   // Update Activity name
   const [editActivityInputValue, setEditActivityInputValue] = useState('');
@@ -118,18 +132,22 @@ const Activity = () => {
       .catch(error => console.log(error));
     
       // closes the Edit Activity Name overlay
-      setShowEditActivityNameOverlay(!showEditActivityNameOverlay);
+      setShowEditActivityOverlay(!showEditActivityOverlay);
   };
 
 
   // Show/hide Edit Friend name overlay
-  const [showEditFriendNameOverlay, setShowEditFriendNameOverlay] = useState(false);
-  const onToggleEditFriendNameOverlayClick = () => setShowEditFriendNameOverlay(!showEditFriendNameOverlay);
+  const [showEditFriendOverlay, setShowEditFriendOverlay] = useState(false);
+  const onEditFriendOverlayClick = (e) => {
+    setShowEditFriendOverlay(!showEditFriendOverlay);
+    setActiveFriendID(Number(e.target.parentNode.parentNode.dataset.id));
+  };
 
   // Update Friend name
-  const [editFriendNameInputValue, setEditFriendNameInputValue] = useState('');
-  const onEditFriendNameInputValueChange = (e) => setEditFriendNameInputValue(e.target.value);
-  const onEditFriendNameSubmitForm = (e) => {
+  const [activeFriendID, setActiveFriendID] = useState(0);
+  const [editFriendInputValue, setEditFriendInputValue] = useState('');
+  const onEditFriendInputValueChange = (e) => setEditFriendInputValue(e.target.value);
+  const onEditFriendSubmitForm = (e) => {
     e.preventDefault();
     // Request body
     const options = {
@@ -139,12 +157,12 @@ const Activity = () => {
         'Content-Type': 'application/json;charset=UTF-8'
       },
       body: JSON.stringify({
-        updatedFriendName: editFriendNameInputValue,
+        updatedFriendName: editFriendInputValue,
         updatedSettledStatus: 0 // UPDATE THIS! UPDATE THIS! UPDATE THIS! UPDATE THIS! UPDATE THIS! UPDATE THIS!
       })
     };
 
-    fetch(`http://localhost:5000/friends/update/${currentActivityID}`, options)
+    fetch(`http://localhost:5000/friends/update/${activeFriendID}`, options)
       .then(response => {
         console.log(response.status);
         console.log('Activity name updated');
@@ -153,7 +171,7 @@ const Activity = () => {
       .catch(error => console.log(error));
     
       // closes the Edit Activity Name overlay
-      setShowEditActivityNameOverlay(!showEditActivityNameOverlay);
+      setShowEditFriendOverlay(!showEditFriendOverlay);
   };
 
 
@@ -166,16 +184,26 @@ const Activity = () => {
       {friendsLoading ?
         <div><i className="fas fa-spinner spinner"></i> Loading</div> :
         <div>
-          <h1>{activityName}</h1><button onClick={onToggleEditActivityNameOverlayClick}>Edit name</button>
-          <hr />
+          <h1 className="activity-name-title">{currentActivityName}</h1><button onClick={onEditActivityOverlayClick} className="edit-button"><i class="fas fa-edit"></i></button>
 
+          {/* Edit Activity overlay */}
           <EditFormOverlay 
             toEdit="activity"
-            showOverlay={showEditActivityNameOverlay}
+            showOverlay={showEditActivityOverlay}
             formInputOneValue={editActivityInputValue}
             onFormInputOneChange={onEditActivityInputValueChange}
             onFormSubmit={onEditActivitySubmitForm}
-            closeOverlay={onToggleEditActivityNameOverlayClick}
+            closeOverlay={onEditActivityOverlayClick}
+          />
+
+          {/* Edit Friend overlay */}
+          <EditFormOverlay 
+            toEdit="friend"
+            showOverlay={showEditFriendOverlay}
+            formInputOneValue={editFriendInputValue}
+            onFormInputOneChange={onEditFriendInputValueChange}
+            onFormSubmit={onEditFriendSubmitForm}
+            closeOverlay={onEditFriendOverlayClick}
           />
 
           <CreateForm 
@@ -183,7 +211,7 @@ const Activity = () => {
             inputValue={newFriendInput}
             onChange={onCreateFriendFormChange}
             buttonText={`Add friend`}
-            description={`Add all friends who were part of the ${activityName}`}
+            description={`Add all Friends who were part of ${activityName}`}
             placeholderText="friend name"
           />
 
@@ -192,13 +220,15 @@ const Activity = () => {
             friendTotalAmount={friendTotalAmount}
             onAddReceiptClick={onAddReceiptClick}
             onDeleteFriendClick={onDeleteFriendClick}
-            openCloseOverlay={onToggleEditFriendNameOverlayClick}
-            showOverlay={showEditFriendNameOverlay}
+            openCloseOverlay={onEditFriendOverlayClick}
           />
 
-          <WhoOwesWho 
+          {friendsData.length > 1 ? 
+            <AmountOwed 
             friendsData={friendsData}
-          />
+            /> :
+            null }
+
 
         </div>
       }

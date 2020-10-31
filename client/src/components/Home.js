@@ -14,6 +14,13 @@ const Home = () => {
     fetch('http://localhost:5000/activities/all')
       .then(response => response.json())
       .then(response => {
+        response.sort((a, b) => {
+          if (a.time_created > b.time_created) {
+            return -1;
+          } else {
+            return 1;
+          }
+        })
         setActivityData(response);
         setActivitiesLoading(false)
       })
@@ -52,7 +59,7 @@ const Home = () => {
 
   // Delete specific Activity
   const onDeleteActivityClick = (e) => {
-    const currentActivityButtonID = e.target.parentNode.dataset.id;
+    const currentActivityButtonID = e.currentTarget.parentNode.parentNode.dataset.id;
     fetch(`http://localhost:5000/activities/delete/${currentActivityButtonID}`, { method: "DELETE" })
       .then(response => {
         console.log(response.status);
@@ -68,12 +75,14 @@ const Home = () => {
 
   return (
     <div>
+      <h1>Activities</h1>
+
       <CreateForm 
         onCreateSubmit={onCreateActivitySubmit}
         inputValue={newActivityInput}
         onChange={onCreateActivityFormChange}
         buttonText="Create activity"
-        description="Activities are things like a group holiday, a restaurant bill or stag do"
+        description="Create an Activity to start off. In your Activity you can add the Friends who took part and the Receipts of the things they paid for."
         placeholderText="activity name"
       />
 

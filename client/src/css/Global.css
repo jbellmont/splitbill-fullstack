@@ -1,3 +1,23 @@
+/* Global colours */
+:root {
+  --mint-colour: #C3FFE9;
+  --lightblue-colour: #C3E9FF;
+  --paleyellow-colour: #FFF3CD;
+  --pink-colour: #FFD7E4;
+  --text-colour: #252525;
+  --shadow-grey: #00000031;
+
+  --mobile-margin: 50px;
+  --desktop-margin: 100px;
+  --main-font: 'Kumbh Sans', sans-serif;
+  --hover-speed: 0.2s;
+  --drop-shadow: #00000031 0px 0px 5px;
+}
+/* https://coolors.co/ffd7e4-fff3cd-c3e9ff-c3ffe9-ffffff */
+
+
+/* Spinner styling and animation */
+
 .spinner {
   animation: loading 1s linear infinite;
 }
@@ -10,3 +30,30 @@
     transform: rotate(360deg);
   }
 }
+
+/* Table */
+
+table {
+  border-collapse: collapse;
+  margin: var(--mobile-margin) 0;
+  box-shadow: var(--drop-shadow);
+}
+
+td, th {
+  border: 2px solid rgb(187, 187, 187);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+tr {
+  background: #FFF;
+}
+
+tbody tr:nth-child(odd) {
+  background: #eee;
+}
+
+td.center {
+  text-align: center;
+}
+

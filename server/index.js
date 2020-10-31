@@ -18,17 +18,25 @@ app.listen(port, () => {
 });
 
 // MySQL
-const db = mysql.createConnection({
+// const db = mysql.createConnection({
+//   host: process.env.HOST,
+//   user: process.env.USER,
+//   password: process.env.PASSWORD,
+//   database: process.env.DATABASE
+// });
+const pool = mysql.createPool({
+  connectionLimit: 10,
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE
 });
 
-db.connect((err) => {
-  if (err) throw err;
-  console.log("MySQL connected...");
-});
+
+// db.connect((err) => {
+//   if (err) throw err;
+//   console.log("MySQL connected...");
+// });
 
 
 // *************************
@@ -42,7 +50,7 @@ app.post('/activities/add', (req, res) => {
     settled_status: 0,
   };
   const sql = 'INSERT INTO activities SET ?';
-  db.query(sql, newActivity, (err, result) => {
+  pool.query(sql, newActivity, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send('Activity added');
@@ -52,7 +60,7 @@ app.post('/activities/add', (req, res) => {
 // READ - Get ALL activities
 app.get('/activities/all', (req, res) => {
   const sql = 'SELECT * FROM activities';
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
@@ -62,7 +70,7 @@ app.get('/activities/all', (req, res) => {
 // READ - Get specific activity
 app.get('/activities/get/:id', (req, res) => {
   const sql = `SELECT * FROM activities WHERE activity_id = ${req.params.id}`;
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
@@ -76,7 +84,7 @@ app.put('/activities/update/:id', (req, res) => {
     settled_status: `${req.body.updatedSettledStatus}`
   };
   const sql = `UPDATE activities SET ? WHERE activity_id = ${req.params.id}`;
-  db.query(sql, updatedActivity, (err, result) => {
+  pool.query(sql, updatedActivity, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send('Activity updated');
@@ -86,7 +94,7 @@ app.put('/activities/update/:id', (req, res) => {
 // DELETE - Delete activity
 app.delete('/activities/delete/:id', (req, res) => {
   const sql = `DELETE FROM activities WHERE activity_id = ${req.params.id}`;
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(sql);
     console.log(result);
@@ -108,7 +116,7 @@ app.post('/friends/add', (req, res) => {
     settled_status: 0,
   };
   const sql = 'INSERT INTO friends SET ?';
-  db.query(sql, newFriend, (err, result) => {
+  pool.query(sql, newFriend, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send('Friend added');
@@ -125,7 +133,7 @@ app.get('/friends/get/:id', (req, res) => {
   WHERE f.activity_id = ${req.params.id}
   GROUP BY f.friend_id;
   `;
-    db.query(sql, (err, result) => {
+    pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
@@ -135,7 +143,7 @@ app.get('/friends/get/:id', (req, res) => {
 // READ - the ActivityID + Friend Name of the active Friend
 app.get('/friends/get/act/:id', (req, res) => {
   const sql = `SELECT friends.activity_id, friends.friend_name FROM friends INNER JOIN activities ON friends.activity_id = activities.activity_id WHERE friends.friend_id = ${req.params.id};`
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
@@ -145,7 +153,7 @@ app.get('/friends/get/act/:id', (req, res) => {
 // READ - get the total amount spent for all Friends
 app.get('/friends/get/spend/all', (req, res) => {
   const sql = `SELECT friend_id, SUM(receipt_amount) as total_paid FROM receipts GROUP BY friend_id`;
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
@@ -159,7 +167,7 @@ app.put('/friends/update/:id', (req, res) => {
     settled_status: `${req.body.updatedSettledStatus}`
   };
   const sql = `UPDATE friends SET ? WHERE friend_id = ${req.params.id}`;
-  db.query(sql, updatedFriend, (err, result) => {
+  pool.query(sql, updatedFriend, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send('Activity updated');
@@ -169,7 +177,7 @@ app.put('/friends/update/:id', (req, res) => {
 // DELETE - Delete friend
 app.delete('/friends/delete/:id', (req, res) => {
   const sql = `DELETE FROM friends WHERE friend_id = ${req.params.id}`;
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(sql);
     console.log(result);
@@ -191,7 +199,7 @@ app.post('/receipts/add', (req, res) => {
     activity_id: `${req.body.activityID}`,
   };
   const sql = 'INSERT INTO receipts SET ?';
-  db.query(sql, newReceipt, (err, result) => {
+  pool.query(sql, newReceipt, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send('Receipt added');
@@ -201,7 +209,7 @@ app.post('/receipts/add', (req, res) => {
 // READ - Get receipts
 app.get('/receipts/all', (req, res) => {
   const sql = 'SELECT * FROM receipts';
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
@@ -211,7 +219,7 @@ app.get('/receipts/all', (req, res) => {
 // READ - Get specific receipts based on friend
 app.get('/receipts/get/:id', (req, res) => {
   const sql = `SELECT * FROM receipts WHERE friend_id = ${req.params.id}`;
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
@@ -228,7 +236,7 @@ app.put('/receipts/update/:id', (req, res) => {
     activity_id: `${req.body.activityID}`,
   };
   const sql = `UPDATE receipts SET ? WHERE receipt_id = ${req.params.id}`;
-  db.query(sql, updatedReceipt, (err, result) => {
+  pool.query(sql, updatedReceipt, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send('Receipt updated');
@@ -238,7 +246,7 @@ app.put('/receipts/update/:id', (req, res) => {
 // DELETE - Delete receipt
 app.delete('/receipts/delete/:id', (req, res) => {
   const sql = `DELETE FROM receipts WHERE friend_id = ${req.params.id}`;
-  db.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(sql);
     console.log(result);

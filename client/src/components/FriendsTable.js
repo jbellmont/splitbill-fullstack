@@ -1,10 +1,9 @@
 import React from 'react';
-import EditFormOverlay from './EditFormOverlay';
 import { Link } from 'react-router-dom';
-import '../css/ActivityList.css';
+import '../css/FriendsTable.css';
 
 
-const FriendsList = (props) => {
+const FriendsTable = (props) => {
 
   return (
     <div>
@@ -15,9 +14,9 @@ const FriendsList = (props) => {
             <th>#</th>
             <th>Friend name</th>
             <th>Total paid</th>
-            <th>Receipts</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Amend receipts</th>
+            <th>Edit Friend name</th>
+            <th>Delete Friend</th>
           </tr>
         </thead>
         <tbody>
@@ -26,25 +25,26 @@ const FriendsList = (props) => {
               <tr key={friend.friend_id} data-id={friend.friend_id}>
                 <td>{index + 1}</td>
                 <td>{friend.friend_name}</td>
-                <td>{friend.total_paid}</td>
-                <td>
+                <td>£ {friend.total_paid}</td>
+                <td className="center">
                   <Link to={`/receipts/${friend.friend_id}`}>
-                    <button onClick={props.onAddReceiptClick}>Amend receipts</button>
+                    <button onClick={props.onAddReceiptClick}><i class="fas fa-file-invoice-dollar"></i></button>
                   </Link>
                 </td>
-                <td data-id={friend.friend_id}>
-                  <button onClick={props.onDeleteFriendClick}>Delete friend</button>
+                <td className="center">
+                  <button onClick={props.openCloseOverlay}><i class="fas fa-edit"></i> </button>
                 </td>
-                <td>
-                  <button onClick={props.openCloseOverlay}>Edit friend name</button>
+                <td data-id={friend.friend_id} className="center">
+                  <button onClick={props.onDeleteFriendClick}><i class="fas fa-trash-alt"></i> </button>
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+
     </div>
   );
 };
 
-export default FriendsList;
+export default FriendsTable;

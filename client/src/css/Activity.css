@@ -1,0 +1,28 @@
+@import "./Global.css";
+
+.activity-name-title {
+  display: inline;
+  margin-right: 10px;
+}
+
+.edit-button {
+  background: none;
+  border: none;
+  position: relative; 
+  bottom: 5px;
+}
+
+.edit-button:focus {
+  outline: none;
+}
+
+.edit-button i {
+  color: var(--shadow-grey);
+  transition: color var(--hover-speed);
+}
+
+.edit-button i:hover {
+  color: var(--text-colour);
+  cursor: pointer;
+}
+
