@@ -1,4 +1,4 @@
-# Task List app (React.js) - Live link TBC
+# splitbill fullstack app - Live link TBC
 
 *FYI - this project is WIP. Functionality is there but styling needs to be finished*
 
