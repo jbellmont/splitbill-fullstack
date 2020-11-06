@@ -75,23 +75,28 @@ const Home = () => {
 
   return (
     <div>
+      <section>
       <h1>Activities</h1>
+        <CreateForm 
+          onCreateSubmit={onCreateActivitySubmit}
+          inputValue={newActivityInput}
+          onChange={onCreateActivityFormChange}
+          buttonText="Create activity"
+          description="Create an Activity to start off. In your Activity you can add the Friends who took part and the Receipts of the things they paid for."
+          placeholderText="activity name"
+        />
+      </section>
 
-      <CreateForm 
-        onCreateSubmit={onCreateActivitySubmit}
-        inputValue={newActivityInput}
-        onChange={onCreateActivityFormChange}
-        buttonText="Create activity"
-        description="Create an Activity to start off. In your Activity you can add the Friends who took part and the Receipts of the things they paid for."
-        placeholderText="activity name"
-      />
+      <hr />
 
       {activitiesLoading ?
         <div><i className="fas fa-spinner spinner"></i> Loading</div> :
-        <ActivityList 
-          activityData={activityData}
-          onDeleteActivityClick={onDeleteActivityClick}
-        />
+        <section>
+          <ActivityList 
+            activityData={activityData}
+            onDeleteActivityClick={onDeleteActivityClick}
+          />
+        </section>
       }
 
     </div>

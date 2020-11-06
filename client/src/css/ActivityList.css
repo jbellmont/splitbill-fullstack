@@ -41,6 +41,7 @@
   color: var(--shadow-grey);
   transition: color var(--hover-speed);
   margin-left: 20px;
+  cursor: pointer;
 }
 
 .activity-button .right-side button:hover {

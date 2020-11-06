@@ -8,7 +8,7 @@ const EditFormOverlay = (props) => {
     <div className="overlay-container">
       <h1>Edit {props.toEdit} name</h1>
       <form onSubmit={e => e.preventDefault()}>
-        <label>{nameCapitalized} name: </label>
+        <label>{nameCapitalized} name <br /></label>
         <input 
           type="text" 
           value={props.formInputOneValue} 
@@ -16,18 +16,19 @@ const EditFormOverlay = (props) => {
           required
         />
 
-        {props.toEdit === 'receipts' ?
+        {props.toEdit === 'receipt' ?
         <div>
 
-          <label>Receipt amount: </label>
+          <label>Receipt amount <br /> </label>
           <input 
             type="text" 
             value={props.formInputTwoValue} 
             onChange={props.onFormInputTwoChange} 
             required
           />
+          <br />
 
-          <label>Receipt category 
+          <label>Receipt category <br />
             <select value={props.formInputThreeValue} onChange={props.onFormInputThreeChange} required>
               <option>Alcohol</option>
               <option>Grocery</option>

@@ -175,9 +175,6 @@ const Activity = () => {
   };
 
 
-
-
-
   return (
     <div>
 
@@ -206,27 +203,38 @@ const Activity = () => {
             closeOverlay={onEditFriendOverlayClick}
           />
 
-          <CreateForm 
-            onCreateSubmit={onCreateFriendSubmit}
-            inputValue={newFriendInput}
-            onChange={onCreateFriendFormChange}
-            buttonText={`Add friend`}
-            description={`Add all Friends who were part of ${activityName}`}
-            placeholderText="friend name"
-          />
+          <section>
+            <CreateForm 
+              onCreateSubmit={onCreateFriendSubmit}
+              inputValue={newFriendInput}
+              onChange={onCreateFriendFormChange}
+              buttonText={`Add friend`}
+              description={`Add all Friends who were part of ${activityName}`}
+              placeholderText="friend name"
+            />
+          </section>
 
-          <FriendsTable 
-            friendsData={friendsData}
-            friendTotalAmount={friendTotalAmount}
-            onAddReceiptClick={onAddReceiptClick}
-            onDeleteFriendClick={onDeleteFriendClick}
-            openCloseOverlay={onEditFriendOverlayClick}
-          />
+          <hr />
+
+          <section>
+            <h2>Friend list</h2>
+            <FriendsTable 
+              friendsData={friendsData}
+              friendTotalAmount={friendTotalAmount}
+              onAddReceiptClick={onAddReceiptClick}
+              onDeleteFriendClick={onDeleteFriendClick}
+              openCloseOverlay={onEditFriendOverlayClick}
+            />
+          </section>
+
+          <hr />
 
           {friendsData.length > 1 ? 
-            <AmountOwed 
-            friendsData={friendsData}
-            /> :
+            <section>
+              <AmountOwed 
+                friendsData={friendsData}
+              />
+            </section> :
             null }
 
 

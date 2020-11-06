@@ -10,6 +10,10 @@
   margin: 20px 0px;
 }
 
+.create-form input:focus {
+  outline: none;
+}
+
 .create-form button {
   font-family: var(--main-font);
   font-size: 1rem;
@@ -21,10 +25,15 @@
   box-shadow: var(--drop-shadow);
   width: 150px;
   transition: background-color var(--hover-speed);
+  cursor: pointer;
 }
 
 .create-form button:hover {
   background-color: #FFC2D5;
+}
+
+.create-form button:focus {
+  outline: none;
 }
 
 .create-form p {

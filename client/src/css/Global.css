@@ -16,6 +16,12 @@
 /* https://coolors.co/ffd7e4-fff3cd-c3e9ff-c3ffe9-ffffff */
 
 
+/* Layout */
+
+section {
+  margin-bottom: var(--mobile-margin);
+}
+
 /* Spinner styling and animation */
 
 .spinner {
@@ -45,6 +51,25 @@ td, th {
   text-align: left;
 }
 
+td button {
+  background: none;
+  border: none;
+}
+
+td button i {
+  font-size: 1rem;
+  transition: color var(--hover-speed);
+}
+
+td button:focus {
+  outline: none;
+}
+
+td button i:hover {
+  cursor: pointer;
+  color: var(--shadow-grey);
+}
+
 tr {
   background: #FFF;
 }
@@ -57,3 +82,10 @@ td.center {
   text-align: center;
 }
 
+/* Misc */
+
+hr {
+  border: 0;
+  height: 3px;
+  background-color: var(--shadow-grey);
+}

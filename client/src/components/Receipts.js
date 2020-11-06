@@ -141,25 +141,33 @@ const Receipts = () => {
       {receiptsLoading ?
         <div><i className="fas fa-spinner spinner"></i> Loading</div> :
         <div>
-          <h2>Add receipt for {currentFriendName}</h2>
-          <AddReceiptForm 
-            inputReceiptName={inputReceiptName}
-            setInputReceiptName={setInputReceiptName}
-            inputReceiptAmount={inputReceiptAmount}
-            setInputReceiptAmount={setInputReceiptAmount}
-            inputReceiptCategory={inputReceiptCategory}
-            setInputReceiptCategory={setInputReceiptCategory}
-            onCreateReceiptSubmit={onCreateReceiptSubmit}
-          />
+          <h1>Add receipt for {currentFriendName}</h1>
 
-          <ReceiptsTable 
-            receiptsData={receiptsData}
-            onDeleteReceiptClick={onDeleteReceiptClick}
-            onEditReceiptOverlayClick={onEditReceiptOverlayClick}
-          />
+          <section>
+            <AddReceiptForm 
+              inputReceiptName={inputReceiptName}
+              setInputReceiptName={setInputReceiptName}
+              inputReceiptAmount={inputReceiptAmount}
+              setInputReceiptAmount={setInputReceiptAmount}
+              inputReceiptCategory={inputReceiptCategory}
+              setInputReceiptCategory={setInputReceiptCategory}
+              onCreateReceiptSubmit={onCreateReceiptSubmit}
+            />
+          </section>
+
+          <hr />
+
+          <section>
+            <h2>List of receipts</h2>
+            <ReceiptsTable 
+              receiptsData={receiptsData}
+              onDeleteReceiptClick={onDeleteReceiptClick}
+              onEditReceiptOverlayClick={onEditReceiptOverlayClick}
+            />
+          </section>
 
           <EditFormOverlay 
-            toEdit="receipts"
+            toEdit="receipt"
             showOverlay={showEditReceiptsOverlay}
             formInputOneValue={editReceiptNameInputValue}
             onFormInputOneChange={onEditReceiptNameInputValueChange}

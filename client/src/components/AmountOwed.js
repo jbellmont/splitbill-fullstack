@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../css/AmountOwed.css';
 
 const AmountOwed = ({ friendsData }) => {
   
@@ -20,16 +21,17 @@ const AmountOwed = ({ friendsData }) => {
     <div>
       <h2>Amount owed</h2>
 
-      <select 
-        name="friend" 
-        id="select-friend-list"
-        value={dropdownValue}
-        onChange={onDropdownChange}
-      >
-        {friendsData.map(friend => <option value={friend.friend_id}>{friend.friend_name}</option>)}
-      </select>
-
-      owes...
+      <div className="owes-dropdown-container">
+        <select 
+          name="friend" 
+          id="select-friend-list"
+          value={dropdownValue}
+          onChange={onDropdownChange}
+        >
+          {friendsData.map(friend => <option value={friend.friend_id}>{friend.friend_name}</option>)}
+        </select>
+        owes...
+      </div>  
 
       <table>
           <thead>

@@ -4,6 +4,7 @@ import Header from './Header';
 import Home from './Home';
 import Activity from './Activity';
 import Receipts from './Receipts';
+import Footer from './Footer';
 import '../css/App.css';
 
 const App = () => {
@@ -25,6 +26,8 @@ const App = () => {
           <Route path="/receipts" component={Receipts} />
         </div>
       </Router>
+
+      <Footer />
 
     </div>
   );

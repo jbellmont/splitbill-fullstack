@@ -13,8 +13,8 @@ const ReceiptsTable = (props) => {
             <th>Receipt name</th>
             <th>Receipt category</th>
             <th>Receipt amount</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Edit receipt</th>
+            <th>Delete receipt</th>
           </tr>
         </thead>
         <tbody>
@@ -24,9 +24,9 @@ const ReceiptsTable = (props) => {
                 <td>{index + 1}</td>
                 <td>{receipt.receipt_name}</td>
                 <td>{receipt.receipt_category}</td>
-                <td>{receipt.receipt_amount}</td>
-                <td><button onClick={props.onEditReceiptOverlayClick}>Edit receipt</button></td>
-                <td><button onClick={props.onDeleteReceiptClick}>Delete receipt</button></td>
+                <td>£ {receipt.receipt_amount}</td>
+                <td className="center"><button onClick={props.onEditReceiptOverlayClick}><i class="fas fa-edit"></i></button></td>
+                <td className="center"><button onClick={props.onDeleteReceiptClick}><i class="fas fa-trash-alt"></i></button></td>
               </tr>
             );
           })}
