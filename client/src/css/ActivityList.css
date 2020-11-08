@@ -1,10 +1,21 @@
 .activity-button-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+}
+
+@media(min-width: 768px) { /* Tablet */
+  .activity-button-container {
+    grid-template-columns: auto auto;
+  }
+}
+
+@media(min-width: 1024px) { /* Laptop and above */
+  .activity-button-container {
+    grid-template-columns: auto auto auto auto;
+  }
 }
 
 .activity-button {
+
   display: flex;
   align-items: center;
   background-color: #FFF;

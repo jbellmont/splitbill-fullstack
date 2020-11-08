@@ -72,7 +72,7 @@ const Receipts = () => {
 
   // Delete specific Receipt
   const onDeleteReceiptClick = (e) => {
-    const currentReceiptID = e.target.parentNode.parentNode.dataset.id;
+    const currentReceiptID = e.currentTarget.parentNode.parentNode.dataset.id;
     console.log(currentReceiptID);
     fetch(`http://localhost:5000/receipts/delete/${currentReceiptID}`, { method: "DELETE" })
       .then(response => {

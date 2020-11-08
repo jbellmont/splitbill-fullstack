@@ -1,0 +1,42 @@
+@import "./Global.css";
+
+.dd-container {
+  position: absolute;
+  transform: translateY(-75px);
+  width: 150px;
+  background-color: #FFF;
+  border: 2px solid var(--shadow-grey);
+  padding: 10px;
+  border-radius: 5px;
+  user-select: none;
+}
+
+.dd-container:hover {
+  cursor: pointer;
+}
+
+.dd-header-title {
+  display: flex;
+}
+
+.dd-header-title-text {
+  width: 80%;
+}
+
+.dd-header-title-icon {
+  text-align: right;
+  width: 20%;
+}
+
+.dd-list {
+  list-style: none;
+  padding: 0;
+}
+
+.dd-list-item {
+  padding: 10px 0px;
+}
+
+.dd-list-item:hover {
+  background: #eee;
+}

@@ -1,16 +1,3 @@
-.owes-dropdown-container {
-  background-color: #FFF;
-  width: 200px;
-  padding: 20px;
-  border: 2px solid var(--shadow-grey);
-  border-radius: 5px;
-  box-shadow: var(--drop-shadow);
-}
-
-.owes-dropdown-container select {
-  margin-right: 5px;
-}
-
-.owes-dropdown-container select:focus {
-  outline: none;
+.extra-margin-bottom {
+  margin-bottom: 100px;
 }

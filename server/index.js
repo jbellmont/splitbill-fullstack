@@ -17,26 +17,14 @@ app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
 
-// MySQL
-// const db = mysql.createConnection({
-//   host: process.env.HOST,
-//   user: process.env.USER,
-//   password: process.env.PASSWORD,
-//   database: process.env.DATABASE
-// });
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
-  database: process.env.DATABASE
+  database: process.env.DATABASE,
+  multipleStatements: true
 });
-
-
-// db.connect((err) => {
-//   if (err) throw err;
-//   console.log("MySQL connected...");
-// });
 
 
 // *************************
@@ -93,7 +81,11 @@ app.put('/activities/update/:id', (req, res) => {
 
 // DELETE - Delete activity
 app.delete('/activities/delete/:id', (req, res) => {
-  const sql = `DELETE FROM activities WHERE activity_id = ${req.params.id}`;
+  const sql = `  
+  DELETE FROM activities WHERE activity_id = ${req.params.id};
+  DELETE FROM friends WHERE activity_id = ${req.params.id};
+  DELETE FROM receipts WHERE activity_id = ${req.params.id};
+  `;
   pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(sql);
@@ -245,7 +237,7 @@ app.put('/receipts/update/:id', (req, res) => {
 
 // DELETE - Delete receipt
 app.delete('/receipts/delete/:id', (req, res) => {
-  const sql = `DELETE FROM receipts WHERE friend_id = ${req.params.id}`;
+  const sql = `DELETE FROM receipts WHERE receipt_id = ${req.params.id}`;
   pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(sql);
@@ -253,6 +245,3 @@ app.delete('/receipts/delete/:id', (req, res) => {
     res.send('Receipt deleted');
   });
 });
-
-
-

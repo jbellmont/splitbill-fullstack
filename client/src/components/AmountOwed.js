@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import Dropdown from './Dropdown';
 import '../css/AmountOwed.css';
 
 const AmountOwed = ({ friendsData }) => {
-  
+  const [listOpen, setListOpen] = useState(false);
+  const toggleList = () => setListOpen(!listOpen);
+
   const [dropdownValue, setDropdownValue] = useState(friendsData[0].friend_id);
   const onDropdownChange = (e) => {
-    setDropdownValue(Number(e.target.value));
+    setDropdownValue(Number(e.target.dataset.id));
+    setListOpen(!listOpen);
+    setFriendDDHeaderValue(e.target.innerText);
   };
+
+  const [friendDDheaderValue, setFriendDDHeaderValue] = useState('Select friend');
   
   const [activeFriendData, setActiveFriendData] = useState('');
   useEffect(() => {
@@ -15,23 +22,19 @@ const AmountOwed = ({ friendsData }) => {
     
   }, [dropdownValue]);
 
-  // (currentFriendSpend/friendsData.length) - (friendYouOwe/friendsData.length)
 
   return (
     <div>
-      <h2>Amount owed</h2>
+      <h2 className="extra-margin-bottom">Amount owed</h2>
 
-      <div className="owes-dropdown-container">
-        <select 
-          name="friend" 
-          id="select-friend-list"
-          value={dropdownValue}
-          onChange={onDropdownChange}
-        >
-          {friendsData.map(friend => <option value={friend.friend_id}>{friend.friend_name}</option>)}
-        </select>
-        owes...
-      </div>  
+      <Dropdown 
+        header={friendDDheaderValue}
+        data={friendsData}
+        type='friends'
+        onDropdownChange={onDropdownChange}
+        toggleList={toggleList}
+        listOpen={listOpen}
+      />
 
       <table>
           <thead>
