@@ -38,12 +38,13 @@ const Receipts = () => {
   // Store value of add Receipt form inputs
   const [inputReceiptName, setInputReceiptName] = useState('');
   const [inputReceiptAmount, setInputReceiptAmount] = useState('');
-  const [inputReceiptCategory, setInputReceiptCategory] = useState('Alcohol');
+  const [inputReceiptCategory, setInputReceiptCategory] = useState('');
 
   // Create new receipt
   const onCreateReceiptSubmit = (e) => {
     // Creates a new Friend in the MySQL data
     e.preventDefault();
+    if (!inputReceiptCategory) return;
     // Request body
     const options = {
       method: 'POST',

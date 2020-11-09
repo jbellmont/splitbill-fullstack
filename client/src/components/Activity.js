@@ -10,7 +10,7 @@ const Activity = () => {
 
   // state & setup
   const [friendsLoading, setFriendsLoading] = useState(true);
-  const [friendsData, setFriendsData] = useState([{activity_name: 'Trip'}]);
+  const [friendsData, setFriendsData] = useState([{}]);
   const [activityButtonClicked, setActivityButtonClicked] = useState(true);
   const currentActivityID = window.location.pathname.split('/')[2]; 
   const [friendTotalAmount, setFriendTotalAmount] = useState([]);
@@ -214,9 +214,10 @@ const Activity = () => {
             />
           </section>
 
-          <hr />
 
+          {friendsData[0].friend_name ?
           <section>
+          <hr />
             <h2>Friend list</h2>
             <FriendsTable 
               friendsData={friendsData}
@@ -225,9 +226,10 @@ const Activity = () => {
               onDeleteFriendClick={onDeleteFriendClick}
               openCloseOverlay={onEditFriendOverlayClick}
             />
-          </section>
-
           <hr />
+          </section> :
+          null }
+
 
           {friendsData.length > 1 ? 
             <section>

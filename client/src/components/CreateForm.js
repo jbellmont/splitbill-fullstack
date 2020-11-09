@@ -10,6 +10,8 @@ const CreateForm = ({ onCreateSubmit, inputValue, buttonText, description, place
         placeholder={placeholderText} 
         value={inputValue} 
         onChange={onChange}
+        required
+        maxLength="25"
       /> <br />
       <button>{buttonText}</button>
     </form>

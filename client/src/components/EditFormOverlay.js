@@ -14,6 +14,7 @@ const EditFormOverlay = (props) => {
           value={props.formInputOneValue} 
           onChange={props.onFormInputOneChange}
           required
+          maxLength="25"
         />
 
         {props.toEdit === 'receipt' ?
@@ -21,9 +22,10 @@ const EditFormOverlay = (props) => {
 
           <label>Receipt amount <br /> </label>
           <input 
-            type="text" 
+            type="number" 
             value={props.formInputTwoValue} 
-            onChange={props.onFormInputTwoChange} 
+            onChange={props.onFormInputTwoChange}
+            min="0.01" max="99999"
             required
           />
           <br />

@@ -15,7 +15,6 @@
 }
 
 .activity-button {
-
   display: flex;
   align-items: center;
   background-color: #FFF;
@@ -34,11 +33,16 @@
 
 .activity-button .left-side {
   flex-grow: 4;
+  min-width: 40%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .activity-button .left-side h3, a{
   color: var(--text-colour);
   margin: 0;
+  overflow-wrap: break-word;
 }
 
 .activity-button .right-side {

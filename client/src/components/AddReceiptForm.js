@@ -18,8 +18,25 @@ const AddReceiptForm = ({ inputReceiptName, setInputReceiptName, inputReceiptAmo
 
   return (
     <form className="add-receipt-form">
-      <label>Receipt name <br /> <input type="text" value={inputReceiptName} onChange={e => setInputReceiptName(e.target.value)} required /></label> <br />
-      <label>Receipt amount <br /> <input type="number" value={inputReceiptAmount} onChange={e => setInputReceiptAmount(e.target.value)} required /></label> <br />
+      <label>Receipt name <br /> 
+        <input 
+          type="text" 
+          value={inputReceiptName} 
+          placeholder="receipt name"
+          onChange={e => setInputReceiptName(e.target.value)} 
+          maxLength="25" 
+          required />
+      </label> <br />
+      
+      <label>Receipt amount <br /> 
+        <input 
+          type="number" 
+          value={inputReceiptAmount} 
+          placeholder="5.99"
+          onChange={e => setInputReceiptAmount(e.target.value)} 
+          max="99999" 
+          required /></label> <br />
+
       <label>Receipt category <br />
 
       <Dropdown 

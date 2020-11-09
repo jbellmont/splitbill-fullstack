@@ -134,7 +134,12 @@ app.get('/friends/get/:id', (req, res) => {
 
 // READ - the ActivityID + Friend Name of the active Friend
 app.get('/friends/get/act/:id', (req, res) => {
-  const sql = `SELECT friends.activity_id, friends.friend_name FROM friends INNER JOIN activities ON friends.activity_id = activities.activity_id WHERE friends.friend_id = ${req.params.id};`
+  const sql = `
+  SELECT friends.activity_id, friends.friend_name 
+  FROM friends 
+  INNER JOIN activities ON friends.activity_id = activities.activity_id 
+  WHERE friends.friend_id = ${req.params.id};
+  `
   pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
@@ -144,7 +149,11 @@ app.get('/friends/get/act/:id', (req, res) => {
 
 // READ - get the total amount spent for all Friends
 app.get('/friends/get/spend/all', (req, res) => {
-  const sql = `SELECT friend_id, SUM(receipt_amount) as total_paid FROM receipts GROUP BY friend_id`;
+  const sql = `
+  SELECT friend_id, SUM(receipt_amount) as total_paid 
+  FROM receipts 
+  GROUP BY friend_id
+  `;
   pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
@@ -168,7 +177,10 @@ app.put('/friends/update/:id', (req, res) => {
 
 // DELETE - Delete friend
 app.delete('/friends/delete/:id', (req, res) => {
-  const sql = `DELETE FROM friends WHERE friend_id = ${req.params.id}`;
+  const sql = `
+  DELETE FROM friends WHERE friend_id = ${req.params.id};
+  DELETE FROM receipts WHERE friend_id = ${req.params.id};
+  `;
   pool.query(sql, (err, result) => {
     if (err) throw err;
     console.log(sql);
